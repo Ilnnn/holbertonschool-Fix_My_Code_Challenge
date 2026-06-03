@@ -2,47 +2,45 @@
 #include <stdlib.h>
 
 /**
- * delete_dnodeint_at_index - Delete a node at a specific index from a list
- * @head: A pointer to the first element of a list
- * @index: The index of the node to delete
- *
- * Return: 1 on success, -1 on failure
+ * delete_dnodeint_at_index - Supprime le nœud à un index donné
+ * @head: Pointeur vers le pointeur du premier élément
+ * @index: Index du nœud à supprimer
+ * * Return: 1 en cas de succès, -1 en cas d'échec
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-	dlistint_t *current = *head;
-	unsigned int i = 0;
+    dlistint_t *tmp = *head;
+    unsigned int i = 0;
 
-	if (head == NULL || *head == NULL)
-		return (-1);
+    if (head == NULL || *head == NULL)
+        return (-1);
 
-	/* Parcourir jusqu'à l'index */
-	while (current != NULL && i < index)
-	{
-		current = current->next;
-		i++;
-	}
+    /* Trouver le nœud à supprimer */
+    while (tmp != NULL && i < index)
+    {
+        tmp = tmp->next;
+        i++;
+    }
 
-	/* Si l'index est hors limite */
-	if (current == NULL)
-		return (-1);
+    /* Si l'index est hors limites */
+    if (tmp == NULL)
+        return (-1);
 
-	/* Si c'est le premier nœud (tête) */
-	if (index == 0)
-	{
-		*head = current->next;
-		if (*head != NULL)
-			(*head)->prev = NULL;
-	}
-	else
-	{
-		/* Relier le précédent au suivant */
-		current->prev->next = current->next;
-		/* Relier le suivant au précédent (s'il existe) */
-		if (current->next != NULL)
-			current->next->prev = current->prev;
-	}
+    /* Si c'est la tête */
+    if (tmp == *head)
+    {
+        *head = tmp->next;
+        if (*head != NULL)
+            (*head)->prev = NULL;
+    }
+    else
+    {
+        /* Relier le nœud précédent au nœud suivant */
+        tmp->prev->next = tmp->next;
+        if (tmp->next != NULL)
+            tmp->next->prev = tmp->prev;
+    }
 
-	free(current);
-	return (1);
+    free(tmp);
+    return (1);
 }
